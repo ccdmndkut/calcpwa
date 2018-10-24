@@ -1,79 +1,117 @@
  <template>
-  <v-content>
-    <div class='outergrid'>
-      <div class="innergrid">
-        <div class="buttons">
-          <div v-for="(rate, i) in rates" :key="i">
-            <!-- <div class='buttonContainer'> -->
-              <v-btn  @click="addrate(rate)" block outline flat color="buttoncolor" class="button display-1 font-weight-bold" >{{rate}}</v-btn>
-              <!-- <div class="button display-1 font-weight-bold">{{rate}}</div> -->
-            <!-- </div> -->
+
+
+    <div class="innergrid">
+      <div class="buttons">
+        <div v-for="(rate, i) in rates" :key="i">
+          <!-- <div class='buttonContainer'> -->
+          <v-btn @click="addrate(rate)" block outline flat class="button display-1 font-weight-bold">
+            <span id="butstyle"> {{rate}}</span> </v-btn>
+          <!-- <div class="button display-1 font-weight-bold">{{rate}}</div> -->
+          <!-- </div> -->
+        </div>
+      </div>
+      <div class="top">
+        <div id="combinedcalc">{{combinedRate}}%</div>
+        <div id="rates">
+          <div class="rateDisplay" v-for="(rates, index) in myrates" :key="index">
+            <v-chip class='mychips' small @input="popper(index, rates)" close>{{rates}}</v-chip>
           </div>
         </div>
-        <div class="top">
-          <div id="combinedcalc">{{combinedRate}}%</div>
-          <div id="rates">
-            <div class="rateDisplay" v-for="(rates, index) in myrates" :key="index">
-              <v-chip class='mychips' small @input="popper(index)" close>{{rates}}</v-chip>
-            </div>
-          </div>
-        </div>
-        <div  class="right">
-          <v-btn @click="clear" id="clearbutton" class='headline' flat block color="success">CLEAR</v-btn>
-          <!-- <div id="clear">CLEAR</div> -->
-        </div>
+      </div>
+      <div class="right">
+        <v-btn @click="clear" id="clearbutton" class='headline' flat block color="success">CLEAR</v-btn>
+        <v-btn @click="undofunc" id="clearbutton" class='headline' flat block color="success">UNDO</v-btn>
+        <v-btn @click="clear" id="clearbutton" disabled class='headline' flat block color="success">REDO</v-btn>
+
+        <!-- <div id="clear">CLEAR</div> -->
       </div>
     </div>
 
-  </v-content>
+
 </template>
 
 <script>
 export default {
-  name: 'calc',
+  name: "calc",
   props: {},
   data() {
     return {
       rates: [10, 20, 30, 40, 50, 60, 70, 80, 90],
+      undo: {
+        lastrate: '',
+        ran: true,
+      },
       myrates: [],
       mycalc: Number,
-      buttoncolor: '#2a353b',
+      buttoncolor: "#2a353b"
     };
   },
   methods: {
-    popper(i) {
+    popper(i, rate) {
       const r = this.myrates;
       r.splice(i, 1);
+      this.undo.ran = false;
+      console.log(rate);
+      this.lastrate = rate;
+    },
+    undofunc() {
+      if (this.undo.ran === false) {
+        if (Array.isArray(this.lastrate)) {
+          this.myrates = this.lastrate;
+          this.undo.ran = true;
+        } else {
+          this.myrates.push(this.lastrate);
+          this.undo.ran = true;
+        }
+      } else {
+        this.lastrate = "";
+        console.log("undo already ran");
+      }
     },
     addrate(r) {
-      const arr = this.myrates;
+   
+      this.lastrate = r;
       arr.push(r);
       console.log(arr.toString());
     },
     clear() {
+      this.lastrate = this.myrates;
+      this.undo.ran = false;
       this.myrates = [];
-    },
+    }
   },
   computed: {
-  combinedRate() {let a=this.myrates.reduce(function(b,a){return b-a/100*b},100);return Math.round(100-a)
-    },
-  },
+    combinedRate() {
+      let a = this.myrates.reduce(function(b, a) {
+        return b - (a / 100) * b;
+      }, 100);
+      return Math.round(100 - a);
+    }
+  }
 };
 </script>
 
-<style scoped>
-body::-webkit-scrollbar { 
-    display: none; 
+<style >
+::-webkit-scrollbar {
+  width: 0px;
+  background: yellow;
+  display: inline !important;
+}
+#butstyle {
+  color: white;
 }
 #clearbutton {
-  height: 33.3%;
+  height: 100%;
   padding: 0px;
   margin: 0px;
-   border: 1px solid  #2a353b;
- border-radius: 0px;
+  border: 1px solid #2a353b;
+  border-radius: 0px;
 }
 html {
   overflow: hidden;
+  width: 450px;
+  height: 650px;
 }
 
 #clear {
@@ -94,15 +132,10 @@ html {
   padding: 0px;
   margin: 0px;
 }
-.outergrid {
-  display: grid;
-  grid-template-columns: 0vh 400px 0vh;
-  grid-template-rows: 0vh 650px 0vh;
-  justify-content: center;
-}
+
 .innergrid {
-  grid-row: 2 / span 1;
-  grid-column: 2 / span 1;
+  width: 450px;
+  height: 650px;
   display: grid;
   grid-template-columns: 3fr 1fr;
   grid-template-rows: 2fr 5fr;
@@ -144,16 +177,15 @@ html {
   grid-template-rows: repeat(3, 1fr);
   grid-row: 2 / span 1;
   grid-column: 1 / span 1;
-  background-color: #5c7b89
+  background-color: #5c7b89;
 }
 .button {
   text-align: center;
   height: 100%;
-  background-color:  #5c7b89;
+  background-color: #5c7b89;
   margin: 0px;
- border: 1px solid  #2a353b;
- border-radius: 0px;
-
+  border: 1px solid #2a353b;
+  border-radius: 0px;
 }
 .top {
   display: grid;
@@ -166,37 +198,38 @@ html {
   font-family: roboto;
 }
 #combinedcalc {
-width: 100%;
-text-align: right;
+  width: 100%;
+  text-align: right;
   grid-row: 1 / span 1;
   grid-column: 1 / span 1;
   color: white;
-  align-self: center;
+  align-self: end;
   justify-self: end;
   font-size: 40px;
   background-color: #5c7b89;
-border-radius: 25px;
-padding-right: 10px;
-box-sizing: border-box;
-padding-top: 5px;
-padding-bottom: 5px;
-
+  border-radius: 25px;
+  padding-right: 10px;
+  box-sizing: border-box;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 #rates {
   grid-row: 2 / span 1;
   grid-column: 1 / span 1;
   color: white;
-  align-self: center;
+  align-self: end;
   justify-self: end;
   font-size: 40px;
 }
 .right {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  grid-row: 2 / span 1;
+  grid-column: 2 / span 1;
   outline: 1px solid #2a353b;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  grid-row: 2 / span 1;
-  grid-column: 2 / span 1;
   background-color: #acbdc4;
 }
 
