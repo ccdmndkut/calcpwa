@@ -132,7 +132,6 @@ html {
   padding: 0px;
   margin: 0px;
 }
-
 .innergrid {
   width: 450px;
   height: 650px;
@@ -145,7 +144,20 @@ html {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
 }
-
+@media screen {
+  .innergrid {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: 2fr 5fr;
+  justify-content: center;
+  outline: 1px solid #2a353b;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+}
 .buttonBorder {
   outline: 1px solid #2a353b;
   box-sizing: border-box;
