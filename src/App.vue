@@ -14,7 +14,7 @@
           <div id="combinedcalc">{{combinedRate}}%</div>
           <div id="rates">
             <div class="rateDisplay" v-for="(rates, index) in myrates" :key="index">
-              <v-chip small @input="popper(index)" close>{{rates}}</v-chip>
+              <v-chip class='mychips' small @input="popper(index)" close>{{rates}}</v-chip>
             </div>
           </div>
         </div>
@@ -92,11 +92,13 @@ body {
 .rateDisplay {
   display: inline-block;
   cursor: pointer;
+  padding: 0px;
+  margin: 0px;
 }
 .outergrid {
   display: grid;
-  grid-template-columns: 1vh 98vh 1vh;
-  grid-template-rows: 1vh 98vh 1vh;
+  grid-template-columns: 0vh 400px 0vh;
+  grid-template-rows: 0vh 650px 0vh;
   justify-content: center;
 }
 .innergrid {
