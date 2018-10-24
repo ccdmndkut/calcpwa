@@ -70,7 +70,7 @@ export default {
       }
     },
     addrate(r) {
-   
+   const arr = this.myrates;
       this.lastrate = r;
       arr.push(r);
       console.log(arr.toString());
