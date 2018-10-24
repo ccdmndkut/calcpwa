@@ -95,8 +95,8 @@ body {
 }
 .outergrid {
   display: grid;
-  grid-template-columns: 20vh 60vh 20vh;
-  grid-template-rows: 10vh 80vh 10vh;
+  grid-template-columns: 1vh 98vh 1vh;
+  grid-template-rows: 1vh 98vh 1vh;
   justify-content: center;
 }
 .innergrid {
