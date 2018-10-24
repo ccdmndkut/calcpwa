@@ -67,6 +67,9 @@ export default {
 </script>
 
 <style scoped>
+body::-webkit-scrollbar { 
+    display: none; 
+}
 #clearbutton {
   height: 33.3%;
   padding: 0px;
@@ -74,9 +77,10 @@ export default {
    border: 1px solid  #2a353b;
  border-radius: 0px;
 }
-body {
+html {
   overflow: hidden;
 }
+
 #clear {
   position: relative;
   transform: rotate(90deg);
