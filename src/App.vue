@@ -55,12 +55,7 @@ export default {
     },
   },
   computed: {
-    combinedRate() {
-      const r = this.myrates;
-      const co = r.reduce((a, c) => a - (a * (c / 100)), 100);
-      const mr = 100 - co;
-      const rounded = Math.round(mr)
-      return rounded;
+  combinedRate() {let a=this.myrates.reduce(function(b,a){return b-a/100*b},100);return Math.round(100-a)
     },
   },
 };
